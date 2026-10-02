@@ -1,0 +1,338 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="theme-color" content="#160d2b">
+<meta name="description" content="Shaadi Kab Hogi? A hilarious, totally-for-fun wedding prediction game.">
+<title>Shaadi Kab Hogi? 💍</title>
+<style>
+:root{--bg:#10091f;--panel:rgba(255,255,255,.075);--line:rgba(255,255,255,.14);--text:#fff9ff;--muted:#c7bad9;--pink:#ff5db1;--gold:#ffd77a;--purple:#a88bff;--mint:#8cf3d2}
+*{box-sizing:border-box}
+html{min-height:100%;background:var(--bg);scroll-behavior:smooth}
+body{margin:0;min-height:100vh;color:var(--text);font-family:ui-rounded,"SF Pro Rounded",system-ui,-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif;background:radial-gradient(ellipse at 8% 5%,rgba(161,91,255,.24),transparent 35%),radial-gradient(ellipse at 95% 20%,rgba(255,72,158,.18),transparent 34%),linear-gradient(160deg,#10091f 0%,#1b0c32 52%,#0b1328 100%);overflow-x:hidden}
+button,input,select{font:inherit}
+button{cursor:pointer}
+button:focus-visible,input:focus-visible,select:focus-visible{outline:3px solid var(--gold);outline-offset:3px}
+.bg-sparkles{position:fixed;inset:0;pointer-events:none;overflow:hidden;z-index:0}
+.spark{position:absolute;opacity:.4;animation:float 8s ease-in-out infinite;font-size:clamp(14px,3vw,25px)}
+@keyframes float{0%,100%{transform:translateY(0) rotate(0)}50%{transform:translateY(-18px) rotate(12deg)}}
+.wrap{position:relative;z-index:1;width:min(100% - 28px,760px);margin:0 auto;padding:24px 0 40px}
+.topbar{display:flex;align-items:center;justify-content:space-between;gap:12px;margin-bottom:24px}
+.brand{display:flex;align-items:center;gap:10px;font-weight:850;letter-spacing:-.4px}
+.brand-icon{display:grid;place-items:center;width:42px;height:42px;border-radius:15px;background:linear-gradient(135deg,#ff5db1,#9e7bff);box-shadow:0 8px 28px #ff5db13b;font-size:22px}
+.brand small{display:block;color:var(--muted);font-size:11px;font-weight:600;letter-spacing:1.7px;text-transform:uppercase;margin-top:2px}
+.sound-btn{border:1px solid var(--line);background:rgba(255,255,255,.06);color:white;border-radius:999px;padding:10px 13px;font-size:13px;font-weight:750}
+.hero{text-align:center;padding:16px 8px 24px}
+.eyebrow{display:inline-flex;align-items:center;gap:7px;padding:7px 12px;border:1px solid #ff8cc64d;background:#ff5db114;color:#ffd3e9;border-radius:999px;font-size:11px;font-weight:850;letter-spacing:1.5px;text-transform:uppercase}
+h1{font-size:clamp(38px,8.5vw,68px);line-height:.99;letter-spacing:-2.8px;margin:19px 0 14px;font-weight:950}
+h1 .gradient{background:linear-gradient(100deg,#ff85c5 5%,#ffd77a 48%,#b7a4ff 90%);-webkit-background-clip:text;background-clip:text;color:transparent}
+.subtitle{max-width:510px;margin:0 auto;color:#d7cbe5;font-size:clamp(14px,3.5vw,17px);line-height:1.65}
+.hero-stats{display:flex;justify-content:center;gap:8px;flex-wrap:wrap;margin-top:18px}
+.pill{padding:7px 10px;border-radius:999px;background:rgba(255,255,255,.055);border:1px solid var(--line);color:#e8dcf5;font-size:11px;font-weight:700}
+.card{border:1px solid var(--line);background:linear-gradient(145deg,rgba(255,255,255,.095),rgba(255,255,255,.035));backdrop-filter:blur(16px);-webkit-backdrop-filter:blur(16px);border-radius:27px;padding:clamp(18px,4.8vw,30px);box-shadow:0 22px 70px rgba(0,0,0,.2)}
+.card-heading{display:flex;align-items:center;gap:12px;margin-bottom:22px}
+.step-icon{display:grid;place-items:center;flex:0 0 43px;height:43px;border-radius:15px;background:linear-gradient(135deg,#ff65b5,#a17dff);font-size:21px}
+.card-heading h2{margin:0;font-size:20px;letter-spacing:-.5px}
+.card-heading p{margin:4px 0 0;color:var(--muted);font-size:13px}
+.field{margin:0 0 17px}
+label{display:block;margin-bottom:8px;font-size:13px;font-weight:800;color:#f5eafa}
+input,select{width:100%;min-height:51px;color:white;background:rgba(12,7,26,.65);border:1px solid #ffffff24;border-radius:14px;padding:13px 14px}
+input::placeholder{color:#9e91b1}
+select option{background:#1b1030;color:white}
+.grid{display:grid;grid-template-columns:1fr 1fr;gap:13px}
+.choice-row{display:flex;flex-wrap:wrap;gap:8px}
+.choice{position:relative}
+.choice input{position:absolute;opacity:0;width:1px;height:1px;pointer-events:none}
+.choice span{display:inline-flex;align-items:center;gap:7px;padding:10px 12px;border:1px solid var(--line);border-radius:12px;background:#ffffff07;color:#e8dff1;font-size:12px;font-weight:750;transition:.2s}
+.choice input:checked+span{border-color:#ff86c6;background:#ff5db121;box-shadow:inset 0 0 0 1px #ff86c64d;color:white}
+.choice input:focus-visible+span{outline:3px solid var(--gold);outline-offset:2px}
+.main-btn{display:flex;align-items:center;justify-content:center;gap:10px;width:100%;min-height:57px;border:0;border-radius:16px;background:linear-gradient(100deg,#ff5db1,#a477ff);color:#fff;font-weight:950;font-size:16px;letter-spacing:.1px;box-shadow:0 12px 32px #d650a43d;transition:transform .18s,filter .18s;margin-top:7px}
+.main-btn:hover{filter:brightness(1.08);transform:translateY(-2px)}
+.main-btn:active{transform:translateY(1px) scale(.99)}
+.microcopy{text-align:center;color:#9f91b5;font-size:11px;line-height:1.5;margin:13px 4px 0}
+.result{display:none;margin-top:22px;animation:pop .5s cubic-bezier(.2,.8,.2,1)}
+.result.show{display:block}
+@keyframes pop{from{opacity:0;transform:translateY(18px) scale(.98)}to{opacity:1;transform:translateY(0) scale(1)}}
+.result-top{text-align:center;position:relative;padding:22px 12px 24px;border-radius:22px;background:radial-gradient(ellipse at top,rgba(255,104,184,.17),transparent 70%),rgba(255,255,255,.035);border:1px solid #ff8cc633;overflow:hidden}
+.ring{font-size:39px;display:block;animation:ringpop .65s ease}
+@keyframes ringpop{0%{transform:scale(.4) rotate(-35deg)}70%{transform:scale(1.2) rotate(10deg)}100%{transform:scale(1) rotate(0)}}
+.result-kicker{font-size:10px;text-transform:uppercase;letter-spacing:2px;color:#ffc1df;font-weight:900;margin-top:8px}
+.result h2{font-size:clamp(28px,7vw,43px);line-height:1.05;letter-spacing:-1.5px;margin:10px 0}
+.result h2 strong{display:block;color:var(--gold);font-size:1.2em}
+.result-intro{color:#d9cde7;line-height:1.6;font-size:13px;max-width:470px;margin:0 auto}
+.result-grid{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-top:12px}
+.stat{padding:15px;border:1px solid var(--line);border-radius:16px;background:#ffffff06;min-height:112px}
+.stat .ico{font-size:21px}
+.stat .label{font-size:10px;text-transform:uppercase;letter-spacing:1px;color:#b9a9cb;font-weight:850;margin:8px 0 5px}
+.stat .value{font-size:15px;font-weight:900;line-height:1.35}
+.stat .detail{font-size:11px;color:#c4b5d5;line-height:1.45;margin-top:4px}
+.prophecy{margin-top:12px;border:1px solid #ffd77a42;border-radius:17px;padding:17px;background:linear-gradient(120deg,#ffd77a0e,#ff5db10a)}
+.prophecy-title{font-size:11px;text-transform:uppercase;letter-spacing:1.5px;font-weight:950;color:var(--gold)}
+.prophecy p{font-size:14px;line-height:1.65;margin:9px 0 0;color:#f4e9f7}
+.result-actions{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-top:13px}
+.secondary-btn{min-height:48px;border:1px solid var(--line);border-radius:14px;background:#ffffff08;color:white;font-size:13px;font-weight:850}
+.secondary-btn:hover{background:#ffffff13}
+.disclaimer{margin:14px 2px 0;color:#9e91b1;font-size:10px;line-height:1.55;text-align:center}
+.footer{text-align:center;color:#847796;font-size:11px;line-height:1.7;margin:24px 10px 0}
+.footer strong{color:#bdaed0}
+.toast{position:fixed;z-index:10;left:50%;bottom:22px;transform:translate(-50%,20px);opacity:0;pointer-events:none;padding:12px 17px;border:1px solid var(--line);border-radius:999px;background:#261638;color:white;font-size:13px;font-weight:800;box-shadow:0 8px 30px #0005;transition:.25s;white-space:nowrap}
+.toast.show{opacity:1;transform:translate(-50%,0)}
+.confetti{position:fixed;top:-15px;z-index:20;width:8px;height:12px;border-radius:2px;pointer-events:none;animation:fall 2.7s linear forwards}
+@keyframes fall{to{transform:translateY(110vh) rotate(760deg);opacity:.1}}
+.hidden{display:none!important}
+@media(max-width:480px){.wrap{width:min(100% - 20px,760px);padding-top:14px}.topbar{margin-bottom:15px}.brand-icon{width:38px;height:38px}.hero{padding-top:11px}h1{letter-spacing:-1.9px}.grid{gap:10px}.card{border-radius:23px}.choice span{padding:9px 10px}.stat{padding:12px;min-height:105px}.stat .value{font-size:14px}}
+@media(prefers-reduced-motion:reduce){*,*::before,*::after{animation-duration:.01ms!important;animation-iteration-count:1!important;scroll-behavior:auto!important;transition-duration:.01ms!important}}
+</style>
+</head>
+<body>
+<div class="bg-sparkles" aria-hidden="true">
+ <span class="spark" style="left:7%;top:18%;animation-delay:-1s">✦</span><span class="spark" style="left:88%;top:14%;animation-delay:-3s">♡</span>
+ <span class="spark" style="left:83%;top:48%;animation-delay:-5s">✧</span><span class="spark" style="left:12%;top:65%;animation-delay:-2s">♡</span>
+ <span class="spark" style="left:70%;top:78%;animation-delay:-4s">✦</span><span class="spark" style="left:24%;top:35%;animation-delay:-6s">✧</span>
+</div>
+<main class="wrap">
+ <header class="topbar">
+  <div class="brand"><div class="brand-icon">💍</div><div>Shaadi Kab Hogi?<small>THE VERY UNOFFICIAL APP</small></div></div>
+  <button class="sound-btn" id="soundToggle" type="button" aria-pressed="false">🔇 Sound off</button>
+ </header>
+ <section class="hero">
+  <div class="eyebrow">✨ Rishtedaar-proof technology</div>
+  <h1>Shaadi <span class="gradient">Kab Hogi?</span></h1>
+  <p class="subtitle">Naam batao, thodi si info do… aur paao apni shaadi ki <b>bilkul hi bekaar, par entertaining</b> prediction. 💘</p>
+  <div class="hero-stats"><span class="pill">😂 100% timepass</span><span class="pill">🔮 0% actual astrology</span><span class="pill">📱 Made for fun</span></div>
+ </section>
+
+ <section class="card" aria-labelledby="formTitle">
+  <div class="card-heading"><div class="step-icon">🪄</div><div><h2 id="formTitle">Chalo, future dekhte hain</h2><p>Form bharo. Kismat ko loading pe lagao.</p></div></div>
+  <form id="predictionForm">
+   <div class="field"><label for="name">Tumhara naam kya hai? *</label><input id="name" name="name" maxlength="24" autocomplete="given-name" placeholder="Jaise: Deepak" required></div>
+   <div class="grid">
+    <div class="field"><label for="age">Age group</label><select id="age" name="age"><option value="teen">18–20</option><option value="early" selected>21–25</option><option value="mid">26–30</option><option value="later">31+</option></select></div>
+    <div class="field"><label for="status">Current status</label><select id="status" name="status"><option value="single" selected>Single 🥲</option><option value="crush">Crush hai 👀</option><option value="complicated">It's complicated 🫠</option><option value="taken">Committed ❤️</option></select></div>
+   </div>
+   <div class="field"><label>Shaadi mein sabse pehle kya chahiye?</label>
+    <div class="choice-row">
+     <label class="choice"><input type="radio" name="priority" value="love" checked><span>❤️ True love</span></label>
+     <label class="choice"><input type="radio" name="priority" value="food"><span>🍕 Unlimited food</span></label>
+     <label class="choice"><input type="radio" name="priority" value="money"><span>💸 Financial stability</span></label>
+     <label class="choice"><input type="radio" name="priority" value="peace"><span>🕊️ Peace yaar</span></label>
+    </div>
+   </div>
+   <div class="field"><label for="wedding">Dream wedding vibe</label><select id="wedding" name="wedding"><option value="big">Big fat Indian wedding ✨</option><option value="simple">Simple & sweet 🌸</option><option value="destination">Destination wedding 🏝️</option><option value="court">Court marriage, party later 😎</option><option value="unknown">Bas chhutti mil jaaye 🛌</option></select></div>
+   <button class="main-btn" id="predictBtn" type="submit"><span>🔮</span> Meri shaadi kab hogi? <span>✨</span></button>
+   <p class="microcopy">No login. No data sent anywhere. Bas tum, tumhari kismat aur ek overconfident algorithm.</p>
+  </form>
+ </section>
+
+ <section class="result" id="result" aria-live="polite" aria-atomic="true">
+  <div class="card">
+   <div class="result-top">
+    <span class="ring">💍</span><div class="result-kicker">The totally unofficial prediction for</div>
+    <h2 id="resultName">Your Name <strong>20XX</strong></h2>
+    <p class="result-intro" id="resultIntro"></p>
+   </div>
+   <div class="result-grid">
+    <div class="stat"><div class="ico">📅</div><div class="label">Shaadi ka saal</div><div class="value" id="yearValue">20XX</div><div class="detail" id="yearDetail"></div></div>
+    <div class="stat"><div class="ico">💘</div><div class="label">Love story type</div><div class="value" id="loveValue"></div><div class="detail" id="loveDetail"></div></div>
+    <div class="stat"><div class="ico">📍</div><div class="label">Wedding venue</div><div class="value" id="venueValue"></div><div class="detail" id="venueDetail"></div></div>
+    <div class="stat"><div class="ico">🍽️</div><div class="label">Most important ritual</div><div class="value" id="foodValue"></div><div class="detail" id="foodDetail"></div></div>
+    <div class="stat"><div class="ico">🧑‍🤝‍🧑</div><div class="label">Partner energy</div><div class="value" id="partnerValue"></div><div class="detail" id="partnerDetail"></div></div>
+    <div class="stat"><div class="ico">📊</div><div class="label">Rishtedaar pressure</div><div class="value" id="pressureValue"></div><div class="detail" id="pressureDetail"></div></div>
+   </div>
+   <div class="prophecy"><div class="prophecy-title">📜 Secret from the wedding universe</div><p id="prophecyText"></p></div>
+   <div class="result-actions"><button class="secondary-btn" type="button" id="shareBtn">📤 Share my result</button><button class="secondary-btn" type="button" id="againBtn">🔁 Try another result</button></div>
+   <p class="disclaimer">Important: Ye ek comedy game hai, real prediction nahi. Shaadi ka timing tumhari choices, circumstances aur real life par depend karta hai. Algorithm ke paas koi kundli, crystal ball ya aunty network nahi hai. 😌</p>
+  </div>
+ </section>
+ <footer class="footer"><strong>Made for laughs, not life decisions. 💖</strong><br>Ab jao, kisi single dost ko bhejo. Rishtedaar ko bhejne se pehle soch lena. 😂</footer>
+</main>
+<div class="toast" id="toast" role="status"></div>
+<script>
+(() => {
+ const $ = id => document.getElementById(id);
+ let soundOn = false;
+ let audioCtx = null;
+ let lastResult = null;
+ const currentYear = new Date().getFullYear();
+
+ const data = {
+  love: [
+   ["Friends-to-lovers","Pehle 'bro' bolega/bolegi, phir ek din plot twist."],
+   ["Slow-burn romance","Story itni slow hogi ki audience season 2 maangegi."],
+   ["Family-approved love","Cupid ke saath family group chat bhi involved hai."],
+   ["Meet-cute chaos","Pehli meeting mein kuch toh girega. Chances are, tumhara confidence."]
+  ],
+  venue: [
+   ["Rooftop under the stars","Fairy lights, photos aur ek cousin jo DJ banega."],
+   ["Grand banquet hall","Entry aisi jaise award show mein lifetime achievement mil raha ho."],
+   ["Beach-side setup","Romance 10/10, hairstyle hawa ke bharose."],
+   ["Neighbourhood function hall","Budget smart, snacks legendary."],
+   ["Court + dinner plan","Signatures pehle, biryani baad mein."]
+  ],
+  partner: [
+   ["Green-flag energy 🟢","Tumhari baat sunega/sunegi aur charger bhi share karega/karegi."],
+   ["Certified foodie 🍜","Date plan ka pehla sawaal: 'Khaane mein kya hai?'"],
+   ["Calm to your chaos 🌿","Tum overthink karoge, woh bolega/bolegi: 'Paani pi lo.'"],
+   ["Partner-in-crime 🕶️","Reels banayega/banayegi aur embarrassing photos save bhi karega/karegi."],
+   ["Memes department 😂","Good morning se pehle meme bhejne ki strong possibility."]
+  ],
+  food: [
+   ["Paneer ki pehli plate","Relationship baad mein, buffet ki location pehle."],
+   ["Gulab jamun diplomacy","Do families, one dessert, temporary world peace."],
+   ["Chaat counter summit","Vows se pehle golgappe ka important round."],
+   ["Midnight biryani mission","Shaadi khatam, asli party ab shuru."],
+   ["Cake-cutting negotiations","Knife kisne pakadna hai, ispe family meeting."]
+  ],
+  prophecy: [
+   "Ek din tum 'mujhe shaadi nahi karni' bolte hue wedding outfits save kar rahe hoge. Universe screenshots rakhta hai.",
+   "Shaadi ke din sabse emotional moment vows nahi, jab photographer bolega 'last family photo' aur 46 log aur aa jayenge.",
+   "Tumhari love story ka sabse bada twist: dono ko ek hi restaurant ka discount coupon pasand aayega.",
+   "Future partner tumhari weird habits accept karega/karegi. Bas wet towel bed par chhodne ki limit hoti hai.",
+   "Ek aunty poochegi 'good news kab de rahe ho?' aur tumhare paas abhi dessert ka menu bhi decide nahi hoga.",
+   "Tumhari shaadi ki playlist mein ek gaana aisa hoga jise tum publicly deny karoge, par dance full karoge."
+  ],
+  foodProphecy: [
+   "Buffet ki strategy pehle se plan karna. Ye shaadi nahi, tactical operation hai.",
+   "Shaadi ke album mein ek photo zaroor hogi jisme tum plate ko pyaar se dekh rahe hoge.",
+   "Wedding budget mein 'extra dessert' ke liye ek secret line item hoga."
+  ]
+ };
+
+ function hash(str) {
+   let h = 2166136261;
+   for (let i=0;i<str.length;i++){h ^= str.charCodeAt(i); h = Math.imul(h,16777619);}
+   return h >>> 0;
+ }
+ function rng(seed) {
+   let s = seed >>> 0;
+   return () => { s = (s * 1664525 + 1013904223) >>> 0; return s / 4294967296; };
+ }
+ function pick(arr, rand) { return arr[Math.floor(rand()*arr.length)]; }
+ function speakChime() {
+   if (!soundOn) return;
+   try {
+    audioCtx = audioCtx || new (window.AudioContext || window.webkitAudioContext)();
+    if (audioCtx.state === "suspended") audioCtx.resume();
+    const now = audioCtx.currentTime;
+    [523.25,659.25,783.99].forEach((freq,i)=>{
+      const osc=audioCtx.createOscillator(), gain=audioCtx.createGain();
+      osc.type="sine"; osc.frequency.value=freq;
+      gain.gain.setValueAtTime(.0001,now+i*.12);
+      gain.gain.exponentialRampToValueAtTime(.09,now+i*.12+.025);
+      gain.gain.exponentialRampToValueAtTime(.0001,now+i*.12+.22);
+      osc.connect(gain); gain.connect(audioCtx.destination);
+      osc.start(now+i*.12); osc.stop(now+i*.12+.24);
+    });
+   } catch(e) { /* sound is an optional enhancement */ }
+ }
+ function confetti() {
+   if (window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches) return;
+   const colors=['#ff5db1','#ffd77a','#a88bff','#8cf3d2','#ffffff'];
+   for(let i=0;i<58;i++){
+     const p=document.createElement('i'); p.className='confetti';
+     p.style.left=(Math.random()*100)+'vw'; p.style.background=colors[i%colors.length];
+     p.style.animationDelay=(Math.random()*.65)+'s'; p.style.animationDuration=(1.8+Math.random()*1.5)+'s';
+     p.style.transform='rotate('+(Math.random()*360)+'deg)';
+     document.body.appendChild(p); setTimeout(()=>p.remove(),3600);
+   }
+ }
+ function showToast(msg) {
+   const toast=$('toast'); toast.textContent=msg; toast.classList.add('show');
+   clearTimeout(showToast.timer); showToast.timer=setTimeout(()=>toast.classList.remove('show'),2400);
+ }
+ function createPrediction(form) {
+   const name=(form.get('name')||'Dost').trim().replace(/\s+/g,' ');
+   const age=form.get('age')||'early';
+   const status=form.get('status')||'single';
+   const priority=form.get('priority')||'love';
+   const wedding=form.get('wedding')||'big';
+   const rand=rng(hash([name.toLowerCase(),age,status,priority,wedding].join('|')));
+   const ageBase={teen:currentYear+5,early:currentYear+3,mid:currentYear+1,later:currentYear+1}[age]||currentYear+3;
+   let offset=Math.floor(rand()*5)-1;
+   if(status==='taken') offset=Math.min(offset,1);
+   if(status==='complicated') offset=Math.max(offset,1);
+   const year=Math.max(currentYear+1,ageBase+offset);
+   const love=pick(data.love,rand), venue=pick(data.venue,rand), partner=pick(data.partner,rand), food=pick(data.food,rand);
+   const pressure=Math.floor(rand()*101);
+   const statusLine={
+    single:"Cupid abhi tumhari location load kar raha hai.",
+    crush:"Crush ko hint dena hai ya algorithm hi rishta bheje?",
+    complicated:"Relationship status ka plot twist shaadi ke year se bhi bada hai.",
+    taken:"Plot already chal raha hai. Ab bas next season ka wait hai."
+   }[status];
+   const priorityLine={
+    love:"Dil ko priority di hai. Bas communication bhi update rakhna.",
+    food:"Pyaar apni jagah, second serving apni jagah.",
+    money:"Responsible choice. Shaadi ke saath budget sheet bhi aayegi.",
+    peace:"Tumhe partner nahi, peace treaty bhi chahiye. Valid."
+   }[priority];
+   const weddingLine={
+    big:"Entry, lights aur 900 photos. Full cinematic universe.",
+    simple:"Kam drama, zyada pyaar. Aur phir bhi 300 photos.",
+    destination:"Passport ready rakho. Ya kam se kam matching sunglasses.",
+    court:"Legal paperwork speedrun, dinner slow and steady.",
+    unknown:"Tumhari dream wedding ka main event: ek achhi si chhutti."
+   }[wedding];
+   return {name,year,love,venue,partner,food,pressure,statusLine,priorityLine,weddingLine,prophecy:pick(data.prophecy,rand),foodProphecy:pick(data.foodProphecy,rand),seed:hash(name+year+status)};
+ }
+ function render(r) {
+   lastResult=r;
+   $('resultName').innerHTML = '';
+   $('resultName').append(document.createTextNode(r.name + ', tumhari shaadi…'));
+   const year=document.createElement('strong'); year.textContent=r.year; $('resultName').appendChild(year);
+   $('resultIntro').textContent=r.statusLine+' '+r.priorityLine;
+   $('yearValue').textContent=r.year;
+   $('yearDetail').textContent=(r.year-currentYear)+' saal ka cinematic suspense. (Algorithm ke hisaab se!)';
+   $('loveValue').textContent=r.love[0]; $('loveDetail').textContent=r.love[1];
+   $('venueValue').textContent=r.venue[0]; $('venueDetail').textContent=r.weddingLine;
+   $('foodValue').textContent=r.food[0]; $('foodDetail').textContent=r.food[1];
+   $('partnerValue').textContent=r.partner[0]; $('partnerDetail').textContent=r.partner[1];
+   $('pressureValue').textContent=r.pressure+'/100';
+   $('pressureDetail').textContent=r.pressure<30?'Aunty network currently on low battery.':r.pressure<70?'Family group chat is typing…':'BREAKING: Rishtedaar committee has assembled.';
+   $('prophecyText').textContent=r.prophecy+' '+r.foodProphecy;
+   $('result').classList.add('show');
+   $('result').scrollIntoView({behavior:'smooth',block:'start'});
+   $('predictBtn').innerHTML='<span>🔮</span> Dobara kismat check karo <span>✨</span>';
+   confetti(); speakChime();
+ }
+ $('predictionForm').addEventListener('submit',e=>{
+   e.preventDefault();
+   const form=new FormData(e.currentTarget);
+   const name=(form.get('name')||'').trim();
+   if(!name){$('name').focus();showToast('Pehle naam toh batao 😄');return;}
+   if(name.length<2){$('name').focus();showToast('Naam thoda aur complete likho 😄');return;}
+   render(createPrediction(form));
+ });
+ $('againBtn').addEventListener('click',()=>{
+   if(!$('name').value.trim()){$('name').focus();return;}
+   const form=new FormData($('predictionForm'));
+   // Add a playful variation without changing any saved data.
+   form.set('name', $('name').value.trim()+' '+['✨','💖','🎉','🌙'][Math.floor(Math.random()*4)]);
+   render(createPrediction(form));
+   showToast('Universe ne naya plot twist bheja! ✨');
+ });
+ $('shareBtn').addEventListener('click',async()=>{
+   if(!lastResult)return;
+   const r=lastResult;
+   const message=`💍 SHAADI KAB HOGI? 💍\n${r.name} ki comedy prediction: ${r.year}!\n💘 Love story: ${r.love[0]}\n📍 Venue: ${r.venue[0]}\n🍽️ Main ritual: ${r.food[0]}\n😂 Rishtedaar pressure: ${r.pressure}/100\n\nYe sirf ek funny game hai, real prediction nahi! Apna result try karo 😄`;
+   try{
+     if(navigator.share){await navigator.share({title:'Shaadi Kab Hogi? 💍',text:message});}
+     else if(navigator.clipboard && window.isSecureContext){await navigator.clipboard.writeText(message);showToast('Result copied! Ab dost ko bhejo 💌');}
+     else{
+       const ta=document.createElement('textarea');ta.value=message;ta.style.position='fixed';ta.style.opacity='0';document.body.appendChild(ta);ta.select();
+       const ok=document.execCommand('copy');ta.remove();showToast(ok?'Result copied! Ab dost ko bhejo 💌':'Share not available on this browser.');
+     }
+   }catch(err){if(err && err.name!=='AbortError')showToast('Share nahi hua. Ek baar aur try karo.');}
+ });
+ $('soundToggle').addEventListener('click',()=>{
+   soundOn=!soundOn;
+   $('soundToggle').textContent=soundOn?'🔊 Sound on':'🔇 Sound off';
+   $('soundToggle').setAttribute('aria-pressed',String(soundOn));
+   if(soundOn){speakChime();showToast('Wedding bells: ON 🔔');}
+   else showToast('Sound off. Peace restored. 😌');
+ });
+})();
+</script>
+</body>
+</html>
